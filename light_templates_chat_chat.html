@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Sala de Chat</title>
+</head>
+<body>
+    <h1>Hola {{ name }}</h1>
+    <hr/>
+    <div id="comentarios"></div>
+    {% for comment in comments %}
+        <p>{{ comment.user }} - {{ comment.comment }}</p>
+    {% endfor %}
+    <form>
+        {% csrf_token %}
+        {{ form.comment }}
+        <button id="boton">Comentar</button>
+    </form>
+    <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+    <script src="http://127.0.0.1:3000/socket.io/socket.io.js"></script>
+    <script>
+        var socket = io.connect("http://127.0.0.1:3000");
+
+        $("#boton").on('click', Comentar);
+
+        function Comentar(e){
+            e.preventDefault();
+            var datos = {
+                user : "{{ name }}",
+                comment : $("#id_comment").val()
+            };
+            socket.emit('new_comment', datos);
+        }
+        socket.on('return_comment', function(data){
+            var data = JSON.parse(data);
+            $("#comentarios").prepend("<p>" + data.user + " - " + data.comment + "</p>");
+        });
+    </script>
+</body>
+</html>

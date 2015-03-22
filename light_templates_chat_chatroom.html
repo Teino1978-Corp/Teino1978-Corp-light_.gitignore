@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Django y Nodejs</title>
+</head>
+<body>
+    <h1>Ingresa a la aplicación</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        <input type="text" name="name" placeholder="Ingresa tu nombre"/>
+        <input type="submit" value="Ingresa"/>
+    </form>
+</body>
+</html>
